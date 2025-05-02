@@ -1,0 +1,32 @@
+{
+  "name": "zone-of-inhibition-tracker-backend",
+  "version": "1.0.0",
+  "main": "dist/index.js",
+  "repository": "git@github.com:loicpirez/zone-of-inhibition-tracker.git",
+  "author": "Loïc PIREZ <loic@pirez.fr>",
+  "license": "MIT",
+  "scripts": {
+    "dev": "ts-node-dev --respawn --transpile-only src/*.ts",
+    "build": "tsc",
+    "start": "node dist/index.js",
+    "lint": "eslint 'src/**/*.{ts}' --fix"
+  },
+  "dependencies": {
+    "cors": "^2.8.5",
+    "dotenv": "^16.5.0",
+    "express": "^5.1.0",
+    "multer": "^1.4.5-lts.2",
+    "zod": "^3.24.3"
+  },
+  "devDependencies": {
+    "@eslint/js": "^9.25.1",
+    "@types/cors": "^2.8.17",
+    "@types/express": "^5.0.1",
+    "@types/multer": "^1.4.12",
+    "eslint": "^9.25.1",
+    "globals": "^16.0.0",
+    "ts-node-dev": "^2.0.0",
+    "typescript": "^5.8.3",
+    "typescript-eslint": "^8.31.1"
+  }
+}
