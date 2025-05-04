@@ -7,7 +7,12 @@
       "outDir": "./dist",
       "strict": true,
       "esModuleInterop": true,
-      "skipLibCheck": true
+      "skipLibCheck": true,
+      "experimentalDecorators": true,
+      "strictPropertyInitialization": true,
+      "noUnusedLocals": true,
+      "noUnusedParameters": true,
+      "strictNullChecks": true
     },
     "include": ["src"]
   }
