@@ -47,8 +47,6 @@ export async function listFiles(): Promise<FileMetadata[]> {
 }
 
 export async function deleteFile(id: string): Promise<void> {
-	console.log('Deleting file with ID:', id);
-
 	const fileMetadata = await dataSource.manager.findOneBy(FileMetadata, { id });
 
 	if (!fileMetadata) {
