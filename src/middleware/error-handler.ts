@@ -17,7 +17,7 @@ export class AppError extends Error {
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 export function errorHandler(err: Error, req: Request, res: Response, _next: NextFunction): void {
 	if (err instanceof AppError) {
-		logger.warn(`Handled error: ${err.message} | Code: ${err.code} | Request: ${req.method} ${req.url}`);
+		logger.error(`Handled error: ${err.message} | Code: ${err.code} | Request: ${req.method} ${req.url}`);
 		res.status(err.statusCode).json({
 			error: {
 				message: err.message,

@@ -1,4 +1,4 @@
-import { Request, Response, Router } from 'express';
+import { NextFunction, Request, Response, Router } from 'express';
 import { upload } from '../../utils/upload';
 import { deleteFile, getFileMetadata, listFiles, saveFileMetadata, serveFile } from '../../services/file';
 import { logger } from '../../utils/logger';
@@ -35,39 +35,34 @@ fileRouter.get('/list', async(_req, res, next) => {
 	}
 });
 
-
-
-fileRouter.get('/:id', async(req: Request, res: Response): Promise<void> => {
+fileRouter.get('/:id', async(req: Request, res: Response, next: NextFunction) => {
 	try {
 		fileIdSchema.parse(req.params.id);
 
 		const fileMetadata = await getFileMetadata(req.params.id);
 
-
 		if (!fileMetadata) {
 			logger.warn(`File not found: ${req.params.id}`);
-			res.status(404).json({ error: ERROR_MESSAGES.FILE_NOT_FOUND });
-			return;
+			throw new AppError(404, ERROR_MESSAGES.FILE_NOT_FOUND);
 		}
 
 		res.json({ data: { file: toFileMetadataDTO(fileMetadata) } });
 	} catch (error) {
-		logger.error(`Error retrieving file metadata for ID ${req.params.id}:`, error);
-		res.status(500).json({ error: ERROR_MESSAGES.FAILED_TO_GET_METADATA });
+		next(error);
 	}
 });
 
-fileRouter.get('/download/:id', async(req: Request, res: Response) => {
+fileRouter.get('/download/:id', async(req: Request, res: Response, next: NextFunction) => {
 	try {
 		await serveFile(req.params.id, res);
 	} catch (error) {
-		logger.error('Error serving file:', error);
-		res.status(500).json({ error: ERROR_MESSAGES.FAILED_TO_SERVE_FILE });
+		next(error);
 	}
 });
 
 fileRouter.delete('/:id', async(req, res, next) => {
 	try {
+		fileIdSchema.parse(req.params.id);
 		await deleteFile(req.params.id);
 		res.status(204).send();
 	} catch (error) {
