@@ -56,7 +56,6 @@ export async function deleteFile(id: string): Promise<void> {
 	}
 
 	try {
-		// Check if the file exists before attempting to delete it
 		if (fs.existsSync(fileMetadata.path)) {
 			fs.unlinkSync(fileMetadata.path);
 			logger.info(`File deleted successfully: ${fileMetadata.path}`);
