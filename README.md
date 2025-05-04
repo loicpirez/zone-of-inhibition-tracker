@@ -1,8 +1,11 @@
-## Zone of Inhibition Tracker
+# Zone of Inhibition Tracker
 
 A backend service for tracking zone of inhibition experiments.
 
-### Setup
+---
+
+## Setup
+
 1. Clone the repository.
 2. Install dependencies: `npm install`.
 3. Create a `.env` file based on `.env.sample`.
@@ -10,12 +13,15 @@ A backend service for tracking zone of inhibition experiments.
 
 ---
 
-### API Endpoints
+## API Endpoints
 
-#### `POST /api/file`
+### `POST /api/file`
 - **Description**: Upload a file.
 - **Request**:
-  - Form-data: `file` (required)
+  - **Headers**:
+    - `Content-Type: multipart/form-data`
+  - **Body**:
+    - Form-data: `file` (required)
 - **Response**:
   - **Success (200)**:
     ```json
@@ -25,7 +31,7 @@ A backend service for tracking zone of inhibition experiments.
         "id": "file-id",
         "originalName": "example.jpg",
         "mimeType": "image/jpeg",
-        "size": "102400",
+        "size": 102400,
         "createdAt": "2025-05-04T12:34:56.789Z"
       }
     }
@@ -34,7 +40,7 @@ A backend service for tracking zone of inhibition experiments.
 
 ---
 
-#### `GET /api/file/list`
+### `GET /api/file/list`
 - **Description**: List all uploaded files.
 - **Response**:
   - **Success (200)**:
@@ -45,7 +51,7 @@ A backend service for tracking zone of inhibition experiments.
           "id": "file-id",
           "originalName": "example.jpg",
           "mimeType": "image/jpeg",
-          "size": "102400",
+          "size": 102400,
           "createdAt": "2025-05-04T12:34:56.789Z"
         }
       ]
@@ -54,7 +60,7 @@ A backend service for tracking zone of inhibition experiments.
 
 ---
 
-#### `GET /api/file/:id`
+### `GET /api/file/:id`
 - **Description**: Retrieve metadata for a specific file by its ID.
 - **Response**:
   - **Success (200)**:
@@ -65,7 +71,7 @@ A backend service for tracking zone of inhibition experiments.
           "id": "file-id",
           "originalName": "example.jpg",
           "mimeType": "image/jpeg",
-          "size": "102400",
+          "size": 102400,
           "createdAt": "2025-05-04T12:34:56.789Z"
         }
       }
@@ -76,7 +82,7 @@ A backend service for tracking zone of inhibition experiments.
 
 ---
 
-#### `GET /api/file/download/:id`
+### `GET /api/file/download/:id`
 - **Description**: Download a file by its ID.
 - **Response**:
   - **Success (200)**: File download.
@@ -85,16 +91,17 @@ A backend service for tracking zone of inhibition experiments.
 
 ---
 
-#### `DELETE /api/file/:id`
+### `DELETE /api/file/:id`
 - **Description**: Delete a file by its ID.
 - **Response**:
   - **Success (204)**: No content.
   - **Error (404)**: File not found.
-  - **Error (400)**: Invalid file ID format.
+  - **Error (500)**: Internal server error (e.g., permission denied).
 
 ---
 
-### Notes
+## Notes
+
 - All responses are in JSON format, except for file downloads.
 - The `path` attribute of files is excluded from all API responses for security reasons.
-- Ensure the [.env](http://_vscodecontentref_/1) file is correctly configured before starting the server.
+- Ensure the [.env](http://_vscodecontentref_/2) file is correctly configured before starting the server.
