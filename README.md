@@ -104,4 +104,4 @@ A backend service for tracking zone of inhibition experiments.
 
 - All responses are in JSON format, except for file downloads.
 - The `path` attribute of files is excluded from all API responses for security reasons.
-- Ensure the [.env](http://_vscodecontentref_/2) file is correctly configured before starting the server.
+- Ensure the [.env] file is correctly configured before starting the server.
