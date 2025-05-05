@@ -19,7 +19,7 @@ fileRouter.post('/', upload.single('file'), async(req, res, next) => {
 
 		validateFile(req.file);
 		const metadata = await saveFileMetadata(req.file);
-		res.json({ message: SUCCESS_MESSAGES.FILE_UPLOADED, file: metadata });
+		res.json({ message: SUCCESS_MESSAGES.FILE_UPLOADED, file: toFileMetadataDTO(metadata) });
 	} catch (error) {
 		next(error);
 	}
