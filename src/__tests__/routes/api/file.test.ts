@@ -124,7 +124,7 @@ describe('File API Routes', () => {
 
 	describe('DELETE /api/file/:id', () => {
 		it('should delete a file by ID', async() => {
-			mockFS.__setMockFile('/tmp/uploads/file1.jpg');
+			mockFS.setMockFile('/tmp/uploads/file1.jpg');
 
 			const fileRepo = dataSource.getRepository(FileMetadata);
 			const file = await fileRepo.save({
@@ -146,7 +146,7 @@ describe('File API Routes', () => {
 		});
 
 		it('should return 500 if fs.unlinkSync throws error', async() => {
-			mockFS.__setMockFile('/tmp/uploads/file1.jpg');
+			mockFS.setMockFile('/tmp/uploads/file1.jpg');
 			mockFS.unlinkSync.mockImplementationOnce(() => {
 				throw new Error('Permission denied');
 			});
