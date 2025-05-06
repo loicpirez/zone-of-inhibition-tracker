@@ -86,7 +86,7 @@ The application provides an intuitive interface for uploading, viewing, and mana
 ### Setup
 1. Install dependencies:
    ```bash
-   npm install
+   yarn install
    ```
 
 2. Create a `.env` file based on `.env.sample`:
