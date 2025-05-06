@@ -99,7 +99,7 @@ The application provides an intuitive interface for uploading, viewing, and mana
    yarn dev
    ```
 
-4. Open the app in your browser at `http://localhost:3000`.
+4. Open the app in your browser at `http://localhost:5173`.
 
 ---
 
