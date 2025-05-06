@@ -57,8 +57,6 @@ describe('File API Routes', () => {
 				.post('/api/file')
 				.set('x-mock-filename', 'file1.jpg')
 				.attach('file', Buffer.from('test'), 'file1.jpg');
-
-			console.log('pb response', response.body);
 		
 			expect(response.status).toBe(200);
 			expect(response.body.file).toMatchObject({

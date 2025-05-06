@@ -3,8 +3,6 @@ const upload = {
 		const allowedMimeTypes = ['image/jpeg', 'image/png'];
 		const mockFileName = req.headers['x-mock-filename'] as string;
 
-		console.log({ allowedMimeTypes, mf: mockFileName });
-
 		if (!mockFileName) {
 			return res.status(400).json({ error: { message: 'No file uploaded' } });
 		}
