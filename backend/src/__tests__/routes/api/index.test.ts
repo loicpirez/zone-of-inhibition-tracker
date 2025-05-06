@@ -3,7 +3,7 @@ import app from '../../../server';
 import { API_MESSAGES } from '../../../constants/api-messages';
 
 describe('Root API Route', () => {
-	it('should return welcome message on GET /api', async() => {
+	it('should return welcome message on GET /api', async () => {
 		const response = await request(app).get('/api');
 
 		expect(response.status).toBe(200);
