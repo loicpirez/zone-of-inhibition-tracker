@@ -12,6 +12,16 @@ import { getDiameters } from '../../utils/diameters';
 
 const fileRouter = Router();
 
+/**
+ * POST /api/file
+ *
+ * Uploads a file and stores its metadata and associated zone of inhibition diameters.
+ *
+ * @route POST /api/file
+ * @access Public
+ * @returns {200} Success response with file metadata and diameters
+ * @returns {400} Error response if no file or invalid file
+ */
 fileRouter.post('/', upload.single('file'), async(req, res, next) => {
 	try {
 		if (!req.file) {
@@ -20,7 +30,6 @@ fileRouter.post('/', upload.single('file'), async(req, res, next) => {
 
 		validateFile(req.file);
 		const metadata = await saveFileMetadata(req.file);
-
 		const diameters = getDiameters(req.file.originalname);
 
 		res.json({
@@ -32,6 +41,16 @@ fileRouter.post('/', upload.single('file'), async(req, res, next) => {
 	}
 });
 
+/**
+ * GET /api/file/list
+ *
+ * Lists all uploaded files with their metadata and diameters.
+ *
+ * @route GET /api/file/list
+ * @access Public
+ * @returns {200} List of files with metadata and diameters
+ * @returns {500} Internal server error
+ */
 fileRouter.get('/list', async(_req, res, next) => {
 	try {
 		const files = await listFiles();
@@ -45,12 +64,23 @@ fileRouter.get('/list', async(_req, res, next) => {
 	}
 });
 
+/**
+ * GET /api/file/:id
+ *
+ * Retrieves metadata and diameters for a file by its ID.
+ *
+ * @route GET /api/file/:id
+ * @access Public
+ * @param {string} id - UUID of the file
+ * @returns {200} File metadata and diameters
+ * @returns {400} Invalid UUID format
+ * @returns {404} File not found
+ */
 fileRouter.get('/:id', async(req: Request, res: Response, next: NextFunction) => {
 	try {
 		fileIdSchema.parse(req.params.id);
 
 		const fileMetadata = await getFileMetadata(req.params.id);
-
 		if (!fileMetadata) {
 			logger.warn(`File not found: ${req.params.id}`);
 			throw new AppError(404, ERROR_MESSAGES.FILE_NOT_FOUND);
@@ -60,14 +90,25 @@ fileRouter.get('/:id', async(req: Request, res: Response, next: NextFunction) =>
 
 		res.json({
 			data: {
-				file: { ...toFileMetadataDTO(fileMetadata), diameters }
-			}
+				file: { ...toFileMetadataDTO(fileMetadata), diameters },
+			},
 		});
 	} catch (error) {
 		next(error);
 	}
 });
 
+/**
+ * GET /api/file/download/:id
+ *
+ * Downloads the raw file by its ID.
+ *
+ * @route GET /api/file/download/:id
+ * @access Public
+ * @param {string} id - UUID of the file
+ * @returns {200} File stream as attachment
+ * @returns {404} File not found
+ */
 fileRouter.get('/download/:id', async(req: Request, res: Response, next: NextFunction) => {
 	try {
 		await serveFile(req.params.id, res);
@@ -76,6 +117,18 @@ fileRouter.get('/download/:id', async(req: Request, res: Response, next: NextFun
 	}
 });
 
+/**
+ * DELETE /api/file/:id
+ *
+ * Deletes a file from the database and disk by its ID.
+ *
+ * @route DELETE /api/file/:id
+ * @access Public
+ * @param {string} id - UUID of the file
+ * @returns {204} No content if deleted
+ * @returns {400} Invalid UUID format
+ * @returns {404} File not found
+ */
 fileRouter.delete('/:id', async(req, res, next) => {
 	try {
 		fileIdSchema.parse(req.params.id);

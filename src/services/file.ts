@@ -6,6 +6,11 @@ import { AppError } from '../middleware/error-handler';
 import { ERROR_MESSAGES } from '../constants/error-messages';
 import { logger } from '../utils/logger';
 
+/**
+ * Saves file metadata to the database.
+ * @param file - The uploaded file.
+ * @returns The saved `FileMetadata` entity.
+ */
 export async function saveFileMetadata(file: Express.Multer.File): Promise<FileMetadata> {
 	const fileMetadata = new FileMetadata();
 
@@ -17,10 +22,21 @@ export async function saveFileMetadata(file: Express.Multer.File): Promise<FileM
 	return await dataSource.manager.save(fileMetadata);
 }
 
+/**
+ * Retrieves file metadata by ID.
+ * @param id - The ID of the file.
+ * @returns The `FileMetadata` entity or `null` if not found.
+ */
 export async function getFileMetadata(id: string): Promise<FileMetadata | null> {
 	return await dataSource.manager.findOneBy(FileMetadata, { id });
 }
 
+/**
+ * Serves a file for download.
+ * @param id - The ID of the file.
+ * @param res - The Express response object.
+ * @throws AppError if the file is not found or cannot be served.
+ */
 export async function serveFile(id: string, res: Response): Promise<void> {
 	logger.info(`Serving file with ID: ${id}`);
 	const fileMetadata = await getFileMetadata(id);
@@ -48,10 +64,19 @@ export async function serveFile(id: string, res: Response): Promise<void> {
 	}
 }
 
+/**
+ * Lists all files in the database.
+ * @returns An array of `FileMetadata` entities.
+ */
 export async function listFiles(): Promise<FileMetadata[]> {
 	return await dataSource.manager.find(FileMetadata);
 }
 
+/**
+ * Deletes a file and its metadata.
+ * @param id - The ID of the file.
+ * @throws AppError if the file is not found or cannot be deleted.
+ */
 export async function deleteFile(id: string): Promise<void> {
 	logger.info(`Attempting to delete file with ID: ${id}`);
 	const fileMetadata = await dataSource.manager.findOneBy(FileMetadata, { id });
