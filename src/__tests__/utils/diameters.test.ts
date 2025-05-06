@@ -4,6 +4,10 @@ import { getDiameters, loadDiametersMap, setDiametersMap } from '../../utils/dia
 
 jest.mock('fs');
 
+function mockReadStream(data: string): fs.ReadStream {
+	return Readable.from([data]) as fs.ReadStream;
+}
+
 describe('loadDiametersMap', () => {
 	const mockedFs = fs as jest.Mocked<typeof fs>;
 
@@ -34,7 +38,7 @@ describe('loadDiametersMap', () => {
 		const csvData = `image file name,disk 1,disk 2,disk 3
 test-image,10 mm,15mm,20.5mm`;
 
-		mockedFs.createReadStream.mockReturnValue(Readable.from([csvData]) as any);
+		mockedFs.createReadStream.mockReturnValue(mockReadStream(csvData));
 
 		const result = await loadDiametersMap('valid.csv');
 		expect(result.get('test-image.png')).toEqual([
@@ -49,7 +53,7 @@ test-image,10 mm,15mm,20.5mm`;
 		const csvData = `image file name,disk 1
 ,10`;
 
-		mockedFs.createReadStream.mockReturnValue(Readable.from([csvData]) as any);
+		mockedFs.createReadStream.mockReturnValue(mockReadStream(csvData));
 		const result = await loadDiametersMap('no-image.csv');
 		expect(result.size).toBe(0);
 	});
@@ -59,7 +63,7 @@ test-image,10 mm,15mm,20.5mm`;
 		const csvData = `image file name,disk 1,disk 2
 test-image,abc,20`;
 
-		mockedFs.createReadStream.mockReturnValue(Readable.from([csvData]) as any);
+		mockedFs.createReadStream.mockReturnValue(mockReadStream(csvData));
 		const result = await loadDiametersMap('nonnumeric.csv');
 		expect(result.get('test-image.png')).toEqual([{ disk: 2, diameterMm: 20 }]);
 	});
@@ -69,7 +73,7 @@ test-image,abc,20`;
 		const csvData = `image file name,disk 1
 test-image,`;
 
-		mockedFs.createReadStream.mockReturnValue(Readable.from([csvData]) as any);
+		mockedFs.createReadStream.mockReturnValue(mockReadStream(csvData));
 		const result = await loadDiametersMap('empty.csv');
 		expect(result.size).toBe(0);
 	});
@@ -79,7 +83,7 @@ test-image,`;
 		const csvData = `image file name,disk 1 ,disk 2 
 test-image,10,20`;
 
-		mockedFs.createReadStream.mockReturnValue(Readable.from([csvData]) as any);
+		mockedFs.createReadStream.mockReturnValue(mockReadStream(csvData));
 		const result = await loadDiametersMap('spaces.csv');
 		expect(result.get('test-image.png')).toEqual([
 			{ disk: 1, diameterMm: 10 },
@@ -93,7 +97,7 @@ test-image,10,20`;
 img1,10 mm,15 mm
 img2,20 mm,25 mm`;
 
-		mockedFs.createReadStream.mockReturnValue(Readable.from([csvData]) as any);
+		mockedFs.createReadStream.mockReturnValue(mockReadStream(csvData));
 		const result = await loadDiametersMap('multiple.csv');
 
 		expect(result.get('img1.png')).toEqual([
