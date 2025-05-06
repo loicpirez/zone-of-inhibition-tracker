@@ -5,7 +5,7 @@ import { Endpoint } from '../types/mocks';
 
 const apiBaseUrl = import.meta.env.VITE_ZOIT_API_URL;
 
-const endpoints: Record<Endpoint, { data: object; protected: boolean }> = {
+const endpoints: Partial<Record<Endpoint, { data: object; protected: boolean }>> = {
 	root: { data: {}, protected: false },
 	file: { data: {}, protected: false },
 };
@@ -14,7 +14,7 @@ const createHandler = (
 	endpoint: Endpoint,
 	{ data, protected: isProtected }: { data: object; protected: boolean }
 ): HttpHandler => {
-	return http.get(`${apiBaseUrl}/${endpoint}`, async({ request }) => {
+	return http.get(`${apiBaseUrl}/${endpoint}`, async ({ request }) => {
 		if (isProtected) {
 			const authHeader = request.headers.get('Authorization');
 			if (!authHeader || !authHeader.startsWith('Bearer ')) {
@@ -26,7 +26,7 @@ const createHandler = (
 };
 
 const fileHandlers: HttpHandler[] = [
-	http.post(`${apiBaseUrl}/api/file`, async({ request }) => {
+	http.post(`${apiBaseUrl}/api/file`, async ({ request }) => {
 		const formData = await request.formData();
 		const file = formData.get('file');
 
@@ -57,10 +57,10 @@ const fileHandlers: HttpHandler[] = [
 		);
 	}),
 
-	http.get(`${apiBaseUrl}/api/file/:id`, async({ params }) => {
+	http.get(`${apiBaseUrl}/api/file/:id`, async ({ params }) => {
 		const { id } = params;
 
-		if (!id || !/^[a-zA-Z0-9-]+$/.test(id)) {
+		if (!id || !/^[a-zA-Z0-9-]+$/.test(id as string)) {
 			return HttpResponse.json(
 				{
 					error: {
@@ -87,10 +87,10 @@ const fileHandlers: HttpHandler[] = [
 		);
 	}),
 
-	http.get(`${apiBaseUrl}/api/file/download/:id`, async({ params }) => {
+	http.get(`${apiBaseUrl}/api/file/download/:id`, async ({ params }) => {
 		const { id } = params;
 
-		if (!id || !/^[a-zA-Z0-9-]+$/.test(id)) {
+		if (!id || typeof id !== 'string' || !/^[a-zA-Z0-9-]+$/.test(id)) {
 			return HttpResponse.json(
 				{
 					error: {
@@ -124,10 +124,10 @@ const fileHandlers: HttpHandler[] = [
 			{ status: 404 }
 		);
 	}),
-	http.delete(`${apiBaseUrl}/api/file/:id`, async({ params }) => {
+	http.delete(`${apiBaseUrl}/api/file/:id`, async ({ params }) => {
 		const { id } = params;
 
-		if (!id || !/^[a-zA-Z0-9-]+$/.test(id)) {
+		if (!id || typeof id !== 'string' || !/^[a-zA-Z0-9-]+$/.test(id)) {
 			return HttpResponse.json(
 				{
 					error: {
@@ -154,7 +154,7 @@ const fileHandlers: HttpHandler[] = [
 		);
 	}),
 
-	http.get(`${apiBaseUrl}/api`, async() => {
+	http.get(`${apiBaseUrl}/api`, async () => {
 		return HttpResponse.json(responseApiRoot, { status: 200 });
 	}),
 ];

@@ -36,10 +36,10 @@ const FileList: React.FC = () => {
 	const { fileList, setFileList } = useAppStore();
 	const [selectedFileId, setSelectedFileId] = useState<string | null>(null);
 	const [isModalOpen, setIsModalOpen] = useState(false);
-	const [deleteError, setDeleteError] = useState(false);
+	const [deleteError, setDeleteError] = useState('');
 
 	useEffect(() => {
-		const fetchFileList = async() => {
+		const fetchFileList = async () => {
 			try {
 				const response = await fetchData<{ data: FileResponse[] }>(
 					'/api/file/list',
@@ -48,7 +48,7 @@ const FileList: React.FC = () => {
 				setFileList(response.data);
 			} catch (error) {
 				console.error(error);
-				toast.error(t('error.fetching', { resource: t('file.list') }, 'error'));
+				toast.error(t('error.fetching', { resource: t('file.list') }));
 			}
 		};
 
@@ -58,31 +58,31 @@ const FileList: React.FC = () => {
 	}, [fileList.length, setFileList, t]);
 
 	/**
-     * Handles navigation to the file details page.
-     *
-     * @param {string} id - The ID of the file to view.
-     */
+	 * Handles navigation to the file details page.
+	 *
+	 * @param {string} id - The ID of the file to view.
+	 */
 	const handleFileClick = (id: string) => {
 		navigate(`/file/${id}`);
 	};
 
 	/**
-     * Opens the delete confirmation modal for a specific file.
-     *
-     * @param {string} id - The ID of the file to delete.
-     */
+	 * Opens the delete confirmation modal for a specific file.
+	 *
+	 * @param {string} id - The ID of the file to delete.
+	 */
 	const handleDeleteClick = (id: string) => {
 		setSelectedFileId(id);
 		setIsModalOpen(true);
 	};
 
 	/**
-     * Confirms the deletion of the selected file.
-     *
-     * @async
-     * @function confirmDelete
-     */
-	const confirmDelete = async() => {
+	 * Confirms the deletion of the selected file.
+	 *
+	 * @async
+	 * @function confirmDelete
+	 */
+	const confirmDelete = async () => {
 		if (!selectedFileId) return;
 
 		try {
@@ -98,14 +98,18 @@ const FileList: React.FC = () => {
 				toast.success(t('file.delete-success'));
 			}
 		} catch (error: unknown) {
-			setDeleteError(error.message);
+			if (error instanceof Error) {
+				setDeleteError(error.message);
+			} else {
+				setDeleteError(t('file.unknown-error'));
+			}
 			toast.error(t('file.delete-error'));
 		}
 	};
 
 	/**
-     * Closes the delete confirmation modal.
-     */
+	 * Closes the delete confirmation modal.
+	 */
 	const closeModal = () => {
 		setIsModalOpen(false);
 		setSelectedFileId(null);

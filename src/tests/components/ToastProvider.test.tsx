@@ -3,7 +3,7 @@ import { describe, expect, it } from 'vitest';
 import { ToastProvider } from '../../components/Layout/ToastProvider';
 
 describe('ToastProvider Component', () => {
-	it('renders ToastContainer', async() => {
+	it('renders ToastContainer', async () => {
 		render(<ToastProvider />);
 
 		const toastContainer = document.querySelector('.Toastify');

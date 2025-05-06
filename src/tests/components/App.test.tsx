@@ -5,12 +5,12 @@ import { vi } from 'vitest';
 import { UseQueryResult } from '@tanstack/react-query';
 import { FileDetailsResponse } from '../../types/api';
 
-vi.mock('react-i18next', async() => {
+vi.mock('react-i18next', async () => {
 	const mockReactI18next = await import('../__mocks__/react-i18next');
 	return mockReactI18next.default;
 });
 
-vi.mock('../../api/queries', async() => {
+vi.mock('../../api/queries', async () => {
 	const queries = await import('../../api/queries');
 	return {
 		...queries,

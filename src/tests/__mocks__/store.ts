@@ -16,7 +16,7 @@ export const useAppStore = vi.fn(() => ({
 	resetError: mockResetError,
 }));
 
-export const mockAppStore = async(importOriginal: UseBoundStore<StoreApi<AppState>>) => {
+export const mockAppStore = async (importOriginal: UseBoundStore<StoreApi<AppState>>) => {
 	const actual = importOriginal();
 	return {
 		...actual,

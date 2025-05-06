@@ -6,7 +6,7 @@ import { useApiRoot, useFileDetails, useFileDownload, useFileList } from '../../
 import { fetchData } from '../../api/fetch';
 import { ReactNode } from 'react';
 
-vi.mock('react-i18next', async() => {
+vi.mock('react-i18next', async () => {
 	const mockReactI18next = await import('../__mocks__/react-i18next');
 	return mockReactI18next.default;
 });
@@ -23,7 +23,7 @@ const createWrapper = () => {
 };
 
 describe('API Queries', () => {
-	const testQueryHook = <T, >({
+	const testQueryHook = <T,>({
 		hook,
 		mockData,
 		errorMessage,
@@ -38,7 +38,7 @@ describe('API Queries', () => {
 		mockData: T;
 		errorMessage: string;
 	}) => {
-		it('fetches data successfully', async() => {
+		it('fetches data successfully', async () => {
 			(fetchData as Mock).mockResolvedValueOnce(mockData);
 
 			const { result } = renderHook(() => hook(), { wrapper: createWrapper() });
@@ -50,7 +50,7 @@ describe('API Queries', () => {
 			expect(result.current.isError).toBe(false);
 		});
 
-		it('handles errors correctly', async() => {
+		it('handles errors correctly', async () => {
 			(fetchData as Mock).mockRejectedValueOnce(new Error(errorMessage));
 
 			const { result } = renderHook(() => hook(), { wrapper: createWrapper() });

@@ -9,7 +9,7 @@ vi.mock('../../api/index', () => ({
 	},
 }));
 
-it('should handle 404 error', async() => {
+it('should handle 404 error', async () => {
 	const errorResponse = {
 		response: {
 			status: 404,
@@ -26,7 +26,7 @@ it('should handle 404 error', async() => {
 	await expect(fetchData('endpoint', 'Error message')).rejects.toThrow('Error message');
 });
 
-it('should handle NO_FILE_UPLOADED error', async() => {
+it('should handle NO_FILE_UPLOADED error', async () => {
 	const errorResponse = {
 		response: {
 			status: 400,

@@ -4,7 +4,7 @@ import Layout from '../../components/Layout';
 import { vi } from 'vitest';
 import '@testing-library/jest-dom';
 
-vi.mock('react-i18next', async() => {
+vi.mock('react-i18next', async () => {
 	const mockReactI18next = await import('../__mocks__/react-i18next');
 	return mockReactI18next.default;
 });

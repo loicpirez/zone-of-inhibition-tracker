@@ -3,7 +3,7 @@ import { MemoryRouter, Route, Routes } from 'react-router';
 import Navbar from '../../components/Navbar';
 import { vi } from 'vitest';
 
-vi.mock('react-i18next', async() => {
+vi.mock('react-i18next', async () => {
 	const mockReactI18next = await import('../__mocks__/react-i18next');
 	return mockReactI18next.default;
 });

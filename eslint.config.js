@@ -19,11 +19,7 @@ export default defineConfig([
 			ecmaVersion: 2020,
 			globals: globals.browser,
 		},
-		extends: [
-			'js/recommended',
-			...tseslint.configs.recommended,
-			...tseslint.configs.strict
-		],
+		extends: ['js/recommended', ...tseslint.configs.recommended, ...tseslint.configs.strict],
 		rules: {
 			'array-bracket-spacing': ['error', 'never'],
 			camelcase: ['error', { properties: 'never' }],

@@ -85,7 +85,7 @@ describe('FileList Component', () => {
 		expect(modal).toBeInTheDocument();
 	});
 
-	it('deletes a file successfully', async() => {
+	it('deletes a file successfully', async () => {
 		const mockSetFileList = vi.fn();
 		(useAppStore as Mock).mockReturnValue({
 			fileList: [{ id: 'file1', originalName: 'File 1', size: 1024 }],
@@ -102,7 +102,7 @@ describe('FileList Component', () => {
 		expect(api.delete).toHaveBeenCalledWith('/api/file/file1');
 	});
 
-	it('shows error message on delete failure', async() => {
+	it('shows error message on delete failure', async () => {
 		(api.delete as Mock).mockRejectedValueOnce(new Error('Delete failed'));
 
 		render(<FileList />);

@@ -42,41 +42,40 @@ export const useAppStore = create<AppState & typeof variables>((set) => ({
 	...variables,
 
 	/**
-     * Sets the ID of the currently selected file.
-     *
-     * @param {string | null} id - The file ID to set.
-     */
+	 * Sets the ID of the currently selected file.
+	 *
+	 * @param {string | null} id - The file ID to set.
+	 */
 	setFileId: (id: string | null) => set({ fileId: id }),
 
 	/**
-     * Resets the file ID to null.
-     */
+	 * Resets the file ID to null.
+	 */
 	resetFileId: () => set({ fileId: null }),
 
 	/**
-     * Sets the current error state.
-     *
-     * @param {{ message: string; code: string } | null} error - The error object to set.
-     */
+	 * Sets the current error state.
+	 *
+	 * @param {{ message: string; code: string } | null} error - The error object to set.
+	 */
 	setError: (error: { message: string; code: string } | null) => set({ error }),
 
 	/**
-     * Resets the error state to null.
-     */
+	 * Resets the error state to null.
+	 */
 	resetError: () => set({ error: null }),
 
 	/**
-     * Sets the list of files fetched from the API.
-     *
-     * @param {FileResponse[]} fileList - The list of files to set.
-     */
+	 * Sets the list of files fetched from the API.
+	 *
+	 * @param {FileResponse[]} fileList - The list of files to set.
+	 */
 	setFileList: (fileList: FileResponse[]) => set({ fileList }),
 
 	/**
-     * Adds a new file to the beginning of the file list.
-     *
-     * @param {FileResponse} file - The file to add.
-     */
-	addFileToList: (file: FileResponse) =>
-		set((state) => ({ fileList: [file, ...state.fileList] })),
+	 * Adds a new file to the beginning of the file list.
+	 *
+	 * @param {FileResponse} file - The file to add.
+	 */
+	addFileToList: (file: FileResponse) => set((state) => ({ fileList: [file, ...state.fileList] })),
 }));

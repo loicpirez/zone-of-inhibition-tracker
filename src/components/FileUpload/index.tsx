@@ -34,10 +34,10 @@ const FileUpload: React.FC = () => {
 	const { setFileId, setError, addFileToList } = useAppStore();
 
 	/**
-     * Handles file selection from the input.
-     *
-     * @param {React.ChangeEvent<HTMLInputElement>} e - The file input change event.
-     */
+	 * Handles file selection from the input.
+	 *
+	 * @param {React.ChangeEvent<HTMLInputElement>} e - The file input change event.
+	 */
 	const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
 		if (e.target.files) {
 			setFile(e.target.files[0]);
@@ -45,13 +45,13 @@ const FileUpload: React.FC = () => {
 	};
 
 	/**
-     * Handles the file upload process.
-     *
-     * @async
-     * @function handleUpload
-     * @throws {Error} - Throws an error if the upload fails.
-     */
-	const handleUpload = async() => {
+	 * Handles the file upload process.
+	 *
+	 * @async
+	 * @function handleUpload
+	 * @throws {Error} - Throws an error if the upload fails.
+	 */
+	const handleUpload = async () => {
 		if (!file) {
 			showToast(t('error.no-file'), 'error');
 			return;

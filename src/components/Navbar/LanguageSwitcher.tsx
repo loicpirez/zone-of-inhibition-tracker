@@ -31,10 +31,10 @@ const LanguageSwitcher: React.FC = () => {
 	const { i18n } = useTranslation();
 
 	/**
-     * Changes the application's language.
-     *
-     * @param {string} lng - The language code to switch to.
-     */
+	 * Changes the application's language.
+	 *
+	 * @param {string} lng - The language code to switch to.
+	 */
 	const changeLanguage = (lng: string) => {
 		i18n.changeLanguage(lng);
 	};

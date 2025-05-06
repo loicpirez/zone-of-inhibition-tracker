@@ -9,8 +9,8 @@ import Navbar from '../Navbar';
 import { ToastProvider } from './ToastProvider';
 
 interface LayoutProps {
-    /** The child components to be rendered inside the layout. */
-    children: ReactNode;
+	/** The child components to be rendered inside the layout. */
+	children: ReactNode;
 }
 
 /**

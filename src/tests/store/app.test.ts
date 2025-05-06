@@ -34,7 +34,7 @@ describe('mockAppStore', () => {
 		expect(mockResetError).toHaveBeenCalled();
 	});
 
-	it('should return mocked store', async() => {
+	it('should return mocked store', async () => {
 		const importOriginal: UseBoundStore<StoreApi<AppState>> = vi.fn(() => ({
 			getState: vi.fn(),
 			setState: vi.fn(),

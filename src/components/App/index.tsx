@@ -29,10 +29,10 @@ const App: React.FC = () => {
 		<div className="App flex flex-col items-center justify-center flex-grow bg-gray-100">
 			{/* Application title */}
 			<h1 className="text-4xl font-bold text-blue-600 mb-4">{t('app.welcome')}</h1>
-            
+
 			{/* Navigation prompt */}
 			<p className="text-lg text-gray-700 mb-6">{t('app.navigationPrompt')}</p>
-            
+
 			{/* Additional navigation details */}
 			<div className="text-center">
 				<p className="text-gray-600">{t('app.navigationDetails')}</p>

@@ -1,4 +1,3 @@
-
 import { Link, useLocation } from 'react-router';
 import { Navbar as FlowbiteNavbar } from 'flowbite-react';
 import { useTranslation } from 'react-i18next';
@@ -31,10 +30,9 @@ export default function Navbar() {
 	const { t } = useTranslation();
 	const { resetFileId } = useAppStore();
 
-
 	/**
-     * Resets the file ID in the application store when navigating to a new route.
-     */
+	 * Resets the file ID in the application store when navigating to a new route.
+	 */
 	const handleNavigation = () => {
 		resetFileId();
 	};

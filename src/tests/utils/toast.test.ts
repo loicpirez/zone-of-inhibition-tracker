@@ -2,7 +2,7 @@ import { showToast } from '../../utils/toast';
 import { toast } from 'react-toastify';
 import { vi } from 'vitest';
 
-vi.mock('react-toastify', async() => {
+vi.mock('react-toastify', async () => {
 	const mockReactToastify = await import('../__mocks__/react-toastify');
 	return mockReactToastify.default;
 });

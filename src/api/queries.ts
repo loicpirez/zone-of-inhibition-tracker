@@ -82,5 +82,4 @@ export const useFileDownload = (id: string, token?: string) =>
  *
  * @returns {UseQueryResult<{ message: string }, Error>} - The result of the query.
  */
-export const useApiRoot = () =>
-	useCustomQuery<{ message: string }>('apiRoot', '/api', 'api.root');
+export const useApiRoot = () => useCustomQuery<{ message: string }>('apiRoot', '/api', 'api.root');

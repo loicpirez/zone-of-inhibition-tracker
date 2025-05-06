@@ -24,12 +24,12 @@ export const showToast = (
 	message: string,
 	type: 'success' | 'error' | 'info' | 'warning' = 'info',
 	position:
-        | 'top-right'
-        | 'top-center'
-        | 'top-left'
-        | 'bottom-right'
-        | 'bottom-center'
-        | 'bottom-left' = 'bottom-left'
+		| 'top-right'
+		| 'top-center'
+		| 'top-left'
+		| 'bottom-right'
+		| 'bottom-center'
+		| 'bottom-left' = 'bottom-left'
 ) => {
 	toast(message, {
 		type,

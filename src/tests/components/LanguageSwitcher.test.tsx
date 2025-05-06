@@ -4,7 +4,7 @@ import { vi } from 'vitest';
 import { mockChangeLanguage } from '../__mocks__/react-i18next';
 import '@testing-library/jest-dom';
 
-vi.mock('react-i18next', async() => {
+vi.mock('react-i18next', async () => {
 	const mockReactI18next = await import('../__mocks__/react-i18next');
 	return mockReactI18next.default;
 });
@@ -14,10 +14,10 @@ describe('LanguageSwitcher Component', () => {
 		vi.clearAllMocks();
 	});
 
-	test('renders language options', async() => {
+	test('renders language options', async () => {
 		render(<LanguageSwitcher />);
 
-		await act(async() => {
+		await act(async () => {
 			fireEvent.click(screen.getByRole('button', { name: /navbar.language/i }));
 		});
 
@@ -28,10 +28,10 @@ describe('LanguageSwitcher Component', () => {
 		});
 	});
 
-	test('changes language on click for all options', async() => {
+	test('changes language on click for all options', async () => {
 		render(<LanguageSwitcher />);
 
-		await act(async() => {
+		await act(async () => {
 			fireEvent.click(screen.getByRole('button', { name: /navbar.language/i }));
 		});
 
@@ -46,7 +46,7 @@ describe('LanguageSwitcher Component', () => {
 		];
 
 		for (const { label, code } of languages) {
-			await act(async() => {
+			await act(async () => {
 				fireEvent.click(screen.getByText(label));
 			});
 
@@ -56,7 +56,7 @@ describe('LanguageSwitcher Component', () => {
 				expect(screen.queryByText(label)).not.toBeInTheDocument();
 			});
 
-			await act(async() => {
+			await act(async () => {
 				fireEvent.click(screen.getByRole('button', { name: /navbar.language/i }));
 			});
 		}
@@ -64,14 +64,14 @@ describe('LanguageSwitcher Component', () => {
 		expect(mockChangeLanguage).toHaveBeenCalledTimes(languages.length);
 	});
 
-	test('dropdown closes after selection', async() => {
+	test('dropdown closes after selection', async () => {
 		render(<LanguageSwitcher />);
 
-		await act(async() => {
+		await act(async () => {
 			fireEvent.click(screen.getByRole('button', { name: /navbar.language/i }));
 		});
 
-		await act(async() => {
+		await act(async () => {
 			fireEvent.click(screen.getByText('日本語'));
 		});
 

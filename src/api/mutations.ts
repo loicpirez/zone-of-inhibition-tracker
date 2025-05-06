@@ -4,6 +4,7 @@
  * It handles errors and throws a custom error when the request fails.
  */
 
+import axios from 'axios';
 import api from '.';
 import { CustomError } from '../types/api';
 
@@ -23,27 +24,28 @@ import { CustomError } from '../types/api';
  * console.log(result.id);
  * ```
  */
-export const uploadFile = async(file: File): Promise<{ id: string }> => {
+export const uploadFile = async (file: File): Promise<{ id: string }> => {
 	const formData = new FormData();
 	formData.append('file', file);
 
 	try {
 		const response = await api.post<{
-            message: string;
-            file: { id: string };
-        }>('/api/file', formData, { headers: { 'Content-Type': 'multipart/form-data' } });
+			message: string;
+			file: { id: string };
+		}>('/api/file', formData, { headers: { 'Content-Type': 'multipart/form-data' } });
 
 		return { id: response.data.file.id };
-	} catch (error) {
-		if (error) {
+	} catch (error: unknown) {
+		if (axios.isAxiosError(error) && error.response) {
 			const { response } = error;
 
-			if (response?.data?.error?.message) {
+			if (response.data?.error?.message) {
 				throw new CustomError(response.data.error.message, response.status, response.data);
 			}
 
-			throw new CustomError('Unknown error', response?.status || 500, response?.data);
+			throw new CustomError('Unknown error', response.status || 500, response.data);
 		}
+
 		throw new CustomError('Unexpected error occurred', 500, null);
 	}
 };
