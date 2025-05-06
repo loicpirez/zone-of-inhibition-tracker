@@ -147,4 +147,9 @@ dist
 
 data/database.sqlite
 
-uploads/
+uploads/*
+!uploads/.gitkeep
+
+logs/*
+!logs/.gitkeep
+
