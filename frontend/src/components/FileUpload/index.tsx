@@ -10,6 +10,7 @@ import { showToast } from '../../utils/toast';
 import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router';
 import { useAppStore } from '../../store/app';
+import { getUserFriendlyError } from '../../utils/errorHandler';
 
 /**
  * The `FileUpload` component allows users to upload files to the server.
@@ -51,7 +52,7 @@ const FileUpload: React.FC = () => {
 	 * @function handleUpload
 	 * @throws {Error} - Throws an error if the upload fails.
 	 */
-	const handleUpload = async () => {
+	const handleUpload = async() => {
 		if (!file) {
 			showToast(t('error.no-file'), 'error');
 			return;
@@ -72,9 +73,13 @@ const FileUpload: React.FC = () => {
 			navigate(`/file/${response.id}`);
 		} catch (error: unknown) {
 			if (error instanceof Error) {
-				const errorCode = (error as { message: string; code?: string }).code || 'UNKNOWN';
-				setError({ message: error.message, code: errorCode });
-				showToast(error.message || t('error.unexpected'), 'error');
+				const typedError = error as { message: string; code?: string };
+				const errorCode = typedError.code || 'UNKNOWN';
+		
+				setError({ message: typedError.message, code: errorCode });
+		
+				const friendlyMessage = getUserFriendlyError(errorCode, t);
+				showToast(friendlyMessage, 'error');
 			} else {
 				setError({ message: t('error.unexpected'), code: 'UNKNOWN' });
 				showToast(t('error.unexpected'), 'error');

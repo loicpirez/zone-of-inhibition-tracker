@@ -56,7 +56,7 @@ describe('FileUpload Component', () => {
 		expect(showToast).toHaveBeenCalledWith('error.no-file', 'error');
 	});
 
-	it('uploads a file successfully', async () => {
+	it('uploads a file successfully', async() => {
 		const mockFile = new File(['file content'], 'test-file.png', { type: 'image/png' });
 		(uploadFile as Mock).mockResolvedValueOnce({ id: 'file-id' });
 
@@ -82,7 +82,7 @@ describe('FileUpload Component', () => {
 		});
 	});
 
-	it('handles upload error gracefully', async () => {
+	it('handles upload error gracefully', async() => {
 		const mockFile = new File(['file content'], 'test-file.png', { type: 'image/png' });
 		(uploadFile as Mock).mockRejectedValueOnce(new Error('Upload failed'));
 
@@ -99,7 +99,7 @@ describe('FileUpload Component', () => {
 				message: 'Upload failed',
 				code: 'UNKNOWN',
 			});
-			expect(showToast).toHaveBeenCalledWith('Upload failed', 'error');
+			expect(showToast).toHaveBeenCalledWith('error.unexpected', 'error');
 		});
 	});
 });

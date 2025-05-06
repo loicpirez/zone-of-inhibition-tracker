@@ -22,7 +22,7 @@ const fileRouter = Router();
  * @returns {200} Success response with file metadata and diameters
  * @returns {400} Error response if no file or invalid file
  */
-fileRouter.post('/', upload.single('file'), async(req, res, next) => {
+fileRouter.post('/', upload.single('file'), async (req, res, next) => {
 	try {
 		if (!req.file) {
 			throw new AppError(400, ERROR_MESSAGES.NO_FILE_UPLOADED);
@@ -42,21 +42,21 @@ fileRouter.post('/', upload.single('file'), async(req, res, next) => {
 });
 
 /**
- * GET /api/file/list
+ * GET /api/file/
  *
  * Lists all uploaded files with their metadata and diameters.
  *
- * @route GET /api/file/list
+ * @route GET /api/file/
  * @access Public
  * @returns {200} List of files with metadata and diameters
  * @returns {500} Internal server error
  */
-fileRouter.get('/list', async(_req, res, next) => {
+fileRouter.get('/', async (_req, res, next) => {
 	try {
 		const files = await listFiles();
 		const fileDTOs = files.map((file) => ({
 			...toFileMetadataDTO(file),
-			diameters: getDiameters(file.originalName),
+			diameters: getDiameters(file.originalName) || [], // Ensure diameters is an empty array if not found
 		}));
 		res.json({ data: fileDTOs });
 	} catch (error) {
@@ -76,7 +76,7 @@ fileRouter.get('/list', async(_req, res, next) => {
  * @returns {400} Invalid UUID format
  * @returns {404} File not found
  */
-fileRouter.get('/:id', async(req: Request, res: Response, next: NextFunction) => {
+fileRouter.get('/:id', async (req: Request, res: Response, next: NextFunction) => {
 	try {
 		fileIdSchema.parse(req.params.id);
 
@@ -109,7 +109,7 @@ fileRouter.get('/:id', async(req: Request, res: Response, next: NextFunction) =>
  * @returns {200} File stream as attachment
  * @returns {404} File not found
  */
-fileRouter.get('/download/:id', async(req: Request, res: Response, next: NextFunction) => {
+fileRouter.get('/download/:id', async (req: Request, res: Response, next: NextFunction) => {
 	try {
 		await serveFile(req.params.id, res);
 	} catch (error) {
@@ -129,7 +129,7 @@ fileRouter.get('/download/:id', async(req: Request, res: Response, next: NextFun
  * @returns {400} Invalid UUID format
  * @returns {404} File not found
  */
-fileRouter.delete('/:id', async(req, res, next) => {
+fileRouter.delete('/:id', async (req, res, next) => {
 	try {
 		fileIdSchema.parse(req.params.id);
 		await deleteFile(req.params.id);

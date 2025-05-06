@@ -2,10 +2,13 @@
 	"app-name": "ZOIT クライアント",
 	"loading": "読み込み中...",
 	"error": {
-		"fetching": "{{resource}} の取得中にエラーが発生しました",
+		"fetching": "{{resource}}の取得中にエラーが発生しました",
 		"unexpected": "予期しないエラーが発生しました",
 		"unknown": "不明なエラー",
-		"no-file": "ファイルが選択されていません"
+		"no-file": "ファイルが選択されていません",
+		"file-not-found": "ファイルが見つかりません。",
+		"invalid-uuid": "無効なUUIDです。",
+		"no-file-uploaded": "ファイルがアップロードされていません。"
 	},
 	"navbar": {
 		"language": "言語",

@@ -13,6 +13,11 @@ jest.mock('../../../services/file', () => ({
 	serveFile: mockFileService.serveFile,
 }));
 
+jest.mock('../../../config/data-source', () => ({
+	dataSource: require('../../test-data-source').testDataSource,
+}));
+
+
 import request from 'supertest';
 import app from '../../../server';
 import { dataSource } from '../../../config/data-source';
@@ -21,7 +26,7 @@ import { setDiametersMap } from '../../../utils/diameters';
 
 const MOCK_FILE_ID = '00000000-0000-0000-0000-000000000000';
 
-beforeAll(async() => {
+beforeAll(async () => {
 	if (!dataSource.isInitialized) {
 		await dataSource.initialize();
 	}
@@ -33,7 +38,7 @@ beforeAll(async() => {
 		]),
 	);
 });
-afterAll(async() => {
+afterAll(async () => {
 	if (dataSource.isInitialized) {
 		await dataSource.destroy();
 	}
@@ -41,10 +46,10 @@ afterAll(async() => {
 });
 
 describe('File API Routes', () => {
-	beforeEach(async() => {
+	beforeEach(async () => {
 		mockFS.clearMockFiles();
 		jest.clearAllMocks();
-	
+
 		if (!dataSource.isInitialized) {
 			await dataSource.initialize();
 		}
@@ -52,12 +57,12 @@ describe('File API Routes', () => {
 	});
 
 	describe('POST /api/file', () => {
-		it('should upload a file and save metadata with diameters', async() => {
+		it('should upload a file and save metadata with diameters', async () => {
 			const response = await request(app)
 				.post('/api/file')
 				.set('x-mock-filename', 'file1.jpg')
 				.attach('file', Buffer.from('test'), 'file1.jpg');
-		
+
 			expect(response.status).toBe(200);
 			expect(response.body.file).toMatchObject({
 				originalName: 'file1.jpg',
@@ -68,13 +73,13 @@ describe('File API Routes', () => {
 				],
 			});
 		});
-		it('should return 400 if no file is uploaded', async() => {
+		it('should return 400 if no file is uploaded', async () => {
 			const response = await request(app).post('/api/file');
 			expect(response.status).toBe(400);
 			expect(response.body.error.message).toBe('No file uploaded');
 		});
 
-		it('should return 400 if file validation fails', async() => {
+		it('should return 400 if file validation fails', async () => {
 			const response = await request(app)
 				.post('/api/file')
 				.set('x-mock-filename', 'invalid-file.txt')
@@ -85,15 +90,15 @@ describe('File API Routes', () => {
 		});
 	});
 
-	describe('GET /api/file/list', () => {
-		it('should list all uploaded files with diameters', async() => {
+	describe('GET /api/file', () => {
+		it('should list all uploaded files with diameters', async () => {
 			const fileRepo = dataSource.getRepository(FileMetadata);
 			await fileRepo.save([
 				{ originalName: 'file1.jpg', mimeType: 'image/jpeg', size: '1024', path: '/tmp/uploads/file1.jpg' },
 				{ originalName: 'file2.png', mimeType: 'image/png', size: '2048', path: '/tmp/uploads/file2.png' },
 			]);
 
-			const response = await request(app).get('/api/file/list');
+			const response = await request(app).get('/api/file');
 
 			expect(response.status).toBe(200);
 			expect(response.body.data).toEqual(
@@ -116,15 +121,15 @@ describe('File API Routes', () => {
 			);
 		});
 
-		it('should return an empty list if no files are uploaded', async() => {
-			const response = await request(app).get('/api/file/list');
+		it('should return an empty list if no files are uploaded', async () => {
+			const response = await request(app).get('/api/file');
 			expect(response.status).toBe(200);
 			expect(response.body.data).toEqual([]);
 		});
 	});
 
 	describe('GET /api/file/:id', () => {
-		it('should retrieve file metadata by ID with diameters', async() => {
+		it('should retrieve file metadata by ID with diameters', async () => {
 			const fileRepo = dataSource.getRepository(FileMetadata);
 			const file = await fileRepo.save({
 				originalName: 'file1.jpg',
@@ -146,7 +151,7 @@ describe('File API Routes', () => {
 			});
 		});
 
-		it('should return 404 if file is not found', async() => {
+		it('should return 404 if file is not found', async () => {
 			const response = await request(app).get(`/api/file/${MOCK_FILE_ID}`);
 			expect(response.status).toBe(404);
 			expect(response.body.error.message).toBe('File not found');
@@ -154,7 +159,7 @@ describe('File API Routes', () => {
 	});
 
 	describe('GET /api/file/download/:id', () => {
-		it('should download a file by ID', async() => {
+		it('should download a file by ID', async () => {
 			const fileRepo = dataSource.getRepository(FileMetadata);
 			const file = await fileRepo.save({
 				originalName: 'file1.jpg',
@@ -168,7 +173,7 @@ describe('File API Routes', () => {
 			expect(response.header['content-disposition']).toContain('attachment');
 		});
 
-		it('should return 404 if file is not found', async() => {
+		it('should return 404 if file is not found', async () => {
 			const response = await request(app).get(`/api/file/download/${MOCK_FILE_ID}`);
 			expect(response.status).toBe(404);
 			expect(response.body.error.message).toBe('File not found');
@@ -176,7 +181,7 @@ describe('File API Routes', () => {
 	});
 
 	describe('DELETE /api/file/:id', () => {
-		it('should delete a file by ID', async() => {
+		it('should delete a file by ID', async () => {
 			mockFS.setMockFile('/tmp/uploads/file1.jpg', 'mock content');
 
 			const fileRepo = dataSource.getRepository(FileMetadata);
@@ -192,13 +197,13 @@ describe('File API Routes', () => {
 			expect(mockFS.unlinkSync).toHaveBeenCalledWith('/tmp/uploads/file1.jpg');
 		});
 
-		it('should return 404 if file is not found', async() => {
+		it('should return 404 if file is not found', async () => {
 			const response = await request(app).delete(`/api/file/${MOCK_FILE_ID}`);
 			expect(response.status).toBe(404);
 			expect(response.body.error.message).toBe('File not found');
 		});
 
-		it('should return 500 if fs.unlinkSync throws error', async() => {
+		it('should return 500 if fs.unlinkSync throws error', async () => {
 			mockFS.setMockFile('/tmp/uploads/file1.jpg', 'mock content');
 			mockFS.unlinkSync.mockImplementationOnce(() => {
 				throw new Error('Permission denied');

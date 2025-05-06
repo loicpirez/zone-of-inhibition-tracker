@@ -45,7 +45,7 @@ const useCustomQuery = <T>(
  * @returns {UseQueryResult<{ data: FileResponse[] }, Error>} - The result of the query.
  */
 export const useFileList = () =>
-	useCustomQuery<{ data: FileResponse[] }>('fileList', '/api/file/list', 'api.fileList');
+	useCustomQuery<{ data: FileResponse[] }>('fileList', '/api/file/', 'api.fileList');
 
 /**
  * Hook for fetching the details of a specific file.

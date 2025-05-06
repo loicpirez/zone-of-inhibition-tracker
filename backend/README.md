@@ -117,7 +117,7 @@ DATA_DIR=/tmp/data
 
 ---
 
-### `GET /api/file/list`
+### `GET /api/file/`
 - **Description**: List all uploaded files with their metadata and diameters.
 - **Response**:
   - **Success (200)**:
@@ -263,7 +263,7 @@ curl -X POST http://localhost:3000/api/file \
 
 ### List Files
 ```bash
-curl -X GET http://localhost:3000/api/file/list
+curl -X GET http://localhost:3000/api/file/
 ```
 
 ### Get File Metadata

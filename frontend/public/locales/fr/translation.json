@@ -5,7 +5,10 @@
 		"fetching": "Erreur lors du chargement de {{resource}}",
 		"unexpected": "Une erreur inattendue est survenue",
 		"unknown": "Erreur inconnue",
-		"no-file": "Aucun fichier sélectionné"
+		"no-file": "Aucun fichier sélectionné",
+		"file-not-found": "Fichier introuvable.",
+		"invalid-uuid": "UUID invalide.",
+		"no-file-uploaded": "Aucun fichier envoyé."
 	},
 	"navbar": {
 		"language": "Langue",

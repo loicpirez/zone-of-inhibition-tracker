@@ -42,7 +42,7 @@ const FileList: React.FC = () => {
 		const fetchFileList = async () => {
 			try {
 				const response = await fetchData<{ data: FileResponse[] }>(
-					'/api/file/list',
+					'/api/file/',
 					t('error.fetching', { resource: t('file.list') })
 				);
 				setFileList(response.data);
