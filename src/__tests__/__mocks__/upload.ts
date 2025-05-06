@@ -1,5 +1,8 @@
+import { NextFunction, Request, Response } from 'express';
+import { Readable } from 'stream';
+
 const upload = {
-	single: jest.fn(() => (req: any, res: any, next: any) => {
+	single: jest.fn(() => (req: Request, res: Response, next: NextFunction) => {
 		const allowedMimeTypes = ['image/jpeg', 'image/png'];
 		const mockFileName = req.headers['x-mock-filename'] as string;
 
@@ -27,8 +30,8 @@ const upload = {
 			filename: mockFileName,
 			path: `/tmp/uploads/${mockFileName}`,
 			buffer: Buffer.from('test'),
+			stream: Readable.from(Buffer.from('test')),
 		};
-
 		next();
 	}),
 };

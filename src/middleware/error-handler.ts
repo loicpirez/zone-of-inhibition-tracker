@@ -39,6 +39,7 @@ export class AppError extends Error {
  * @param res - The HTTP response object.
  * @param _next - The unused next function required by Express error middleware signature.
  */
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 export function errorHandler(err: Error, req: Request, res: Response, _next: NextFunction): void {
 	if (err instanceof AppError) {
 		logger.error(
