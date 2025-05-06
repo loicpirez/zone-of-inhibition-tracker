@@ -4,7 +4,6 @@ import { envSchema } from '../schemas/environment';
 
 dotenv.config();
 
-
 const parsedEnv = envSchema.safeParse(process.env);
 
 if (!parsedEnv.success) {

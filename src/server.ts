@@ -13,7 +13,6 @@ app.use((_req: Request, _res: Response, next: NextFunction) => {
 	next(new AppError(404, { message: 'Route not found', code: 'ROUTE_NOT_FOUND' }));
 });
 
-
 app.use(errorHandler);
 
 export default app;
