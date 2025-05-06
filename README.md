@@ -6,8 +6,8 @@ The **Zone of Inhibition Tracker (ZOIT)** is a web-based application designed to
 
 ## Repository Structure
 
-- **Frontend**: Available on the [frontend branch](https://github.com/loicpirez/zone-of-inhibition-tracker/tree/frontend). Built using React, TypeScript, and TailwindCSS.
-- **Backend**: Available on the [backend branch](https://github.com/loicpirez/zone-of-inhibition-tracker/tree/backend). Built using Node.js and Express.
+- **Frontend**: Located in the `frontend/` directory. Built using React, TypeScript, and TailwindCSS.
+- **Backend**: Located in the `backend/` directory. Built using Node.js and Express.
 
 ---
 
@@ -45,17 +45,13 @@ To run the application, clone the repository into two separate directories for t
 Clone the repository twice into separate directories for the frontend and backend:
 
 ```bash
-# Clone the frontend
-git clone -b frontend https://github.com/loicpirez/zone-of-inhibition-tracker.git zone-of-inhibition-tracker-frontend
-
-# Clone the backend
-git clone -b backend https://github.com/loicpirez/zone-of-inhibition-tracker.git zone-of-inhibition-tracker-backend
+git clone https://github.com/loicpirez/zone-of-inhibition-tracker.git zone-of-inhibition-tracker
 ```
 
 ### 2. Set Up the Backend
 1. Navigate to the backend directory:
    ```bash
-   cd zone-of-inhibition-tracker-backend
+   cd backend
    ```
 2. Install dependencies:
    ```bash
@@ -73,7 +69,7 @@ git clone -b backend https://github.com/loicpirez/zone-of-inhibition-tracker.git
 ### 3. Set Up the Frontend
 1. Navigate to the frontend directory:
    ```bash
-   cd ../zone-of-inhibition-tracker-frontend
+   cd frontend
    ```
 2. Install dependencies:
    ```bash
@@ -96,6 +92,6 @@ git clone -b backend https://github.com/loicpirez/zone-of-inhibition-tracker.git
 
 ## Notes
 - The frontend and backend communicate via REST APIs. Ensure the `VITE_ZOIT_API_URL` in the frontend `.env` file matches the backend's base URL.
-- For production deployment, refer to the respective README files in the [frontend branch](https://github.com/loicpirez/zone-of-inhibition-tracker/tree/frontend) and [backend branch](https://github.com/loicpirez/zone-of-inhibition-tracker/tree/backend).
+- For production deployment, refer to the respective README files in the [frontend folder](https://github.com/loicpirez/zone-of-inhibition-tracker/frontend) and [backend folder](https://github.com/loicpirez/zone-of-inhibition-tracker/backend).
 
 ---
