@@ -1,0 +1,47 @@
+{
+	"app-name": "ZOIT Client",
+	"loading": "Loading...",
+	"error": {
+		"fetching": "Error fetching {{resource}}",
+		"unexpected": "An unexpected error occurred",
+		"unknown": "Unknown error",
+		"no-file": "No file selected"
+	},
+	"navbar": {
+		"language": "Language",
+		"home": "Home",
+		"file-upload": "File Upload",
+		"file-list": "File List"
+	},
+	"file": {
+		"bytes": "bytes",
+		"capture-photo": "Capture Photo",
+		"created-at": "Created At",
+		"diameters": "Diameters",
+		"disk": "Disk {{number}}",
+		"download": "Download",
+		"id": "ID",
+		"info": "File information",
+		"list": "List",
+		"no-diameters": "No diameters available",
+		"no-file-selected": "No file selected",
+		"no-files": "No files available",
+		"size": "Size",
+		"type": "Type",
+		"upload-success": "File uploaded successfully",
+		"upload": "Upload",
+		"view": "View",
+		"delete": "Delete",
+		"delete-success": "File deleted successfully",
+		"delete-error": "Error while deleting file",
+		"deleted": "File deleted successfully",
+		"confirm-delete": "Delete",
+		"confirm-delete-message": "Are you sure you want to delete this file?",
+		"cancel": "Cancel"
+	},
+	"app": {
+		"welcome": "Welcome to the Zone of Inhibition Tracker!",
+		"navigationPrompt": "Please use the navigation to explore the app.",
+		"navigationDetails": "The 'File Upload' and 'File List' components are available in the navigation bar."
+	}
+}

@@ -1,0 +1,47 @@
+{
+	"app-name": "Client ZOIT",
+	"loading": "Chargement...",
+	"error": {
+		"fetching": "Erreur lors du chargement de {{resource}}",
+		"unexpected": "Une erreur inattendue est survenue",
+		"unknown": "Erreur inconnue",
+		"no-file": "Aucun fichier sélectionné"
+	},
+	"navbar": {
+		"language": "Langue",
+		"home": "Accueil",
+		"file-upload": "Téléverser un fichier",
+		"file-list": "Liste des fichiers"
+	},
+	"file": {
+		"bytes": "octets",
+		"capture-photo": "Prendre une photo",
+		"created-at": "Date de création",
+		"diameters": "Diamètres",
+		"disk": "Disque {{number}}",
+		"download": "Télécharger",
+		"id": "ID",
+		"info": "Informations sur le fichier",
+		"list": "Liste",
+		"no-diameters": "Aucun diamètre disponible",
+		"no-file-selected": "Aucun fichier sélectionné",
+		"no-files": "Aucun fichier disponible",
+		"size": "Taille",
+		"type": "Type",
+		"upload-success": "Fichier téléversé avec succès",
+		"upload": "Téléverser",
+		"view": "Voir",
+		"delete": "Supprimer",
+		"delete-success": "Fichier supprimé avec succès",
+		"delete-error": "Erreur lors de la suppression du fichier",
+		"deleted": "Fichier supprimé avec succès",
+		"confirm-delete": "Supprimer",
+		"confirm-delete-message": "Êtes-vous sûr de vouloir supprimer ce fichier ?",
+		"cancel": "Annuler"
+	},
+	"app": {
+		"welcome": "Bienvenue dans le Zone of Inhibition Tracker !",
+		"navigationPrompt": "Veuillez utiliser la navigation pour explorer l'application.",
+		"navigationDetails": "Les sections « Téléverser un fichier » et « Liste des fichiers » sont disponibles dans la barre de navigation."
+	}
+}

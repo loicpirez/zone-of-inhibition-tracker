@@ -1,0 +1,21 @@
+{
+	"data": {
+		"file": {
+			"id": "file-id",
+			"originalName": "file-name.png",
+			"mimeType": "image/png",
+			"size": 1409247,
+			"createdAt": "2025-05-06T02:02:31.000Z",
+			"diameters": [
+				{
+					"disk": 1,
+					"diameterMm": 29
+				},
+				{
+					"disk": 2,
+					"diameterMm": 28
+				}
+			]
+		}
+	}
+}
