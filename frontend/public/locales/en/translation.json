@@ -5,7 +5,10 @@
 		"fetching": "Error fetching {{resource}}",
 		"unexpected": "An unexpected error occurred",
 		"unknown": "Unknown error",
-		"no-file": "No file selected"
+		"no-file": "No file selected",
+		"file-not-found": "File not found.",
+		"invalid-uuid": "Invalid UUID.",
+		"no-file-uploaded": "No file uploaded."
 	},
 	"navbar": {
 		"language": "Language",
