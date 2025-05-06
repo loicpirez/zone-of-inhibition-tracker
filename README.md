@@ -18,6 +18,7 @@ The **Zone of Inhibition Tracker (ZOIT)** is a web-based application designed to
 - **Language**: TypeScript
 - **Styling**: TailwindCSS
 - **State Management**: Zustand
+- **Data Fetching**: React Query
 - **Routing**: React Router
 - **API Integration**: Axios
 - **Notifications**: React Toastify
