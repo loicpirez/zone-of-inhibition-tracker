@@ -1,6 +1,6 @@
 import fs from 'fs';
 import { Readable } from 'stream';
-import { getDiametersForFileFromMap, loadDiametersMap } from '../../utils/diameters';
+import { getDiameters, loadDiametersMap, setDiametersMap } from '../../utils/diameters';
 
 jest.mock('fs');
 
@@ -11,9 +11,13 @@ describe('loadDiametersMap', () => {
 		jest.clearAllMocks();
 	});
 
+	afterAll(() => {
+		mockedFs.existsSync.mockReset();
+		mockedFs.createReadStream.mockReset();
+	});
+
 	it('should throw an error if the file does not exist', async() => {
 		mockedFs.existsSync.mockReturnValue(false);
-
 		await expect(loadDiametersMap('missing.csv')).rejects.toThrow('File not found');
 	});
 
@@ -22,127 +26,127 @@ describe('loadDiametersMap', () => {
 		mockedFs.createReadStream.mockImplementation(() => {
 			throw new Error('Stream error');
 		});
-
 		await expect(loadDiametersMap('error.csv')).rejects.toThrow('Stream error');
 	});
 
-	it('should parse a valid CSV file and return a map of diameters', async() => {
+	it('should parse a valid CSV file with proper fields', async() => {
 		mockedFs.existsSync.mockReturnValue(true);
-
-		const csvData = `image,disk,diameter_mm
-test-image,1,10
-test-image,2,15
-test-image,3,20
-test-image,4,25
-test-image,5,30
-test-image,6,35`;
+		const csvData = `image file name,disk 1,disk 2,disk 3
+test-image,10 mm,15mm,20.5mm`;
 
 		mockedFs.createReadStream.mockReturnValue(Readable.from([csvData]) as any);
 
 		const result = await loadDiametersMap('valid.csv');
-
-		expect(result).toBeInstanceOf(Map);
-		expect(result.get('test-image')).toEqual([
+		expect(result.get('test-image.png')).toEqual([
 			{ disk: 1, diameterMm: 10 },
 			{ disk: 2, diameterMm: 15 },
-			{ disk: 3, diameterMm: 20 },
-			{ disk: 4, diameterMm: 25 },
-			{ disk: 5, diameterMm: 30 },
-			{ disk: 6, diameterMm: 35 },
+			{ disk: 3, diameterMm: 20.5 },
 		]);
 	});
 
-	it('should skip rows with missing fields', async() => {
+	it('should ignore rows with missing image name', async() => {
 		mockedFs.existsSync.mockReturnValue(true);
-
-		const csvData = `image,disk,diameter_mm
-test-image,1,10
-test-image,,15
-test-image,3,`;
+		const csvData = `image file name,disk 1
+,10`;
 
 		mockedFs.createReadStream.mockReturnValue(Readable.from([csvData]) as any);
-
-		const result = await loadDiametersMap('partial.csv');
-
-		expect(result.get('test-image')).toEqual([
-			{ disk: 1, diameterMm: 10 }
-		]);
+		const result = await loadDiametersMap('no-image.csv');
+		expect(result.size).toBe(0);
 	});
 
-	it('should handle multiple images', async() => {
+	it('should skip non-numeric diameter values', async() => {
 		mockedFs.existsSync.mockReturnValue(true);
-
-		const csvData = `image,disk,diameter_mm
-image1,1,10
-image1,2,15
-image2,1,20
-image2,2,25`;
+		const csvData = `image file name,disk 1,disk 2
+test-image,abc,20`;
 
 		mockedFs.createReadStream.mockReturnValue(Readable.from([csvData]) as any);
-
-		const result = await loadDiametersMap('multiple.csv');
-
-		expect(result.get('image1')).toEqual([
-			{ disk: 1, diameterMm: 10 },
-			{ disk: 2, diameterMm: 15 },
-		]);
-
-		expect(result.get('image2')).toEqual([
-			{ disk: 1, diameterMm: 20 },
-			{ disk: 2, diameterMm: 25 },
-		]);
+		const result = await loadDiametersMap('nonnumeric.csv');
+		expect(result.get('test-image.png')).toEqual([{ disk: 2, diameterMm: 20 }]);
 	});
 
-	it('should ignore rows with non-numeric values', async() => {
+	it('should skip rows with no valid diameter data', async() => {
 		mockedFs.existsSync.mockReturnValue(true);
-
-		const csvData = `image,disk,diameter_mm
-test-image,1,10
-test-image,X,abc
-test-image,2,20`;
+		const csvData = `image file name,disk 1
+test-image,`;
 
 		mockedFs.createReadStream.mockReturnValue(Readable.from([csvData]) as any);
+		const result = await loadDiametersMap('empty.csv');
+		expect(result.size).toBe(0);
+	});
 
-		const result = await loadDiametersMap('non-numeric.csv');
+	it('should handle trailing spaces in disk headers', async() => {
+		mockedFs.existsSync.mockReturnValue(true);
+		const csvData = `image file name,disk 1 ,disk 2 
+test-image,10,20`;
 
-		expect(result.get('test-image')).toEqual([
+		mockedFs.createReadStream.mockReturnValue(Readable.from([csvData]) as any);
+		const result = await loadDiametersMap('spaces.csv');
+		expect(result.get('test-image.png')).toEqual([
 			{ disk: 1, diameterMm: 10 },
 			{ disk: 2, diameterMm: 20 },
 		]);
 	});
+
+	it('should handle multiple images properly', async() => {
+		mockedFs.existsSync.mockReturnValue(true);
+		const csvData = `image file name,disk 1,disk 2
+img1,10 mm,15 mm
+img2,20 mm,25 mm`;
+
+		mockedFs.createReadStream.mockReturnValue(Readable.from([csvData]) as any);
+		const result = await loadDiametersMap('multiple.csv');
+
+		expect(result.get('img1.png')).toEqual([
+			{ disk: 1, diameterMm: 10 },
+			{ disk: 2, diameterMm: 15 },
+		]);
+
+		expect(result.get('img2.png')).toEqual([
+			{ disk: 1, diameterMm: 20 },
+			{ disk: 2, diameterMm: 25 },
+		]);
+	});
 });
 
-describe('getDiametersForFileFromMap', () => {
-	it('should return the diameters array for a given image name', () => {
-		const map = new Map<string, { disk: number; diameterMm: number }[]>();
-		map.set('image-a', [
+describe('getDiameters', () => {
+	afterEach(() => {
+		setDiametersMap(null);
+	});
+
+	it('should return the correct array for an existing image', () => {
+		const map = new Map();
+		map.set('image-a.png', [
 			{ disk: 1, diameterMm: 12 },
-			{ disk: 2, diameterMm: 18 }
+			{ disk: 2, diameterMm: 18 },
 		]);
+		setDiametersMap(map);
 
-		const result = getDiametersForFileFromMap('image-a', map);
-
-		expect(result).toEqual([
+		expect(getDiameters('image-a.png')).toEqual([
 			{ disk: 1, diameterMm: 12 },
-			{ disk: 2, diameterMm: 18 }
+			{ disk: 2, diameterMm: 18 },
 		]);
 	});
 
-	it('should return null if the image name does not exist in the map', () => {
-		const map = new Map<string, { disk: number; diameterMm: number }[]>();
-		map.set('image-b', [{ disk: 1, diameterMm: 20 }]);
+	it('should return null if image name not found', () => {
+		const map = new Map();
+		map.set('image-b.png', [{ disk: 1, diameterMm: 20 }]);
+		setDiametersMap(map);
 
-		const result = getDiametersForFileFromMap('image-c', map);
-
-		expect(result).toBeNull();
+		expect(getDiameters('missing.png')).toBeNull();
 	});
 
-	it('should return an empty array if image exists but has no data (edge case)', () => {
-		const map = new Map<string, { disk: number; diameterMm: number }[]>();
-		map.set('image-empty', []);
 
-		const result = getDiametersForFileFromMap('image-empty', map);
 
-		expect(result).toEqual([]);
+	it('should return empty array if entry exists with no data', () => {
+		const map = new Map();
+		map.set('image-empty.png', []);
+		setDiametersMap(map);
+
+		expect(getDiameters('image-empty.png')).toEqual([]);
+	});
+
+	it('should throw if diametersMap not loaded', () => {
+		setDiametersMap(null);
+		expect(() => getDiameters('image.png')).toThrow('Diameters map not loaded');
 	});
 });

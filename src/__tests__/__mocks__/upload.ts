@@ -1,23 +1,36 @@
-import { NextFunction, Request, Response } from 'express';
-import { Readable } from 'stream';
-
 const upload = {
-	single: jest.fn(() => (req: Request, res: Response, next: NextFunction) => {
-		if (!req.headers['content-type']?.startsWith('multipart/form-data')) {
+	single: jest.fn(() => (req: any, res: any, next: any) => {
+		const allowedMimeTypes = ['image/jpeg', 'image/png'];
+		const mockFileName = req.headers['x-mock-filename'] as string;
+
+		console.log({ allowedMimeTypes, mf: mockFileName });
+
+		if (!mockFileName) {
 			return res.status(400).json({ error: { message: 'No file uploaded' } });
 		}
+
+		const mimeType = mockFileName.endsWith('.jpg')
+			? 'image/jpeg'
+			: mockFileName.endsWith('.png')
+				? 'image/png'
+				: null;
+
+		if (!mimeType || !allowedMimeTypes.includes(mimeType)) {
+			return res.status(400).json({ error: { message: 'Only image files are allowed' } });
+		}
+
 		req.file = {
 			fieldname: 'file',
-			originalname: 'test-file.jpg',
+			originalname: mockFileName,
 			encoding: '7bit',
-			mimetype: 'image/jpeg',
+			mimetype: mimeType,
 			size: 1024,
 			destination: '/tmp/uploads',
-			filename: 'test-file.jpg',
-			path: '/tmp/uploads/test-file.jpg',
-			stream: new Readable(),
-			buffer: Buffer.from(''),
+			filename: mockFileName,
+			path: `/tmp/uploads/${mockFileName}`,
+			buffer: Buffer.from('test'),
 		};
+
 		next();
 	}),
 };

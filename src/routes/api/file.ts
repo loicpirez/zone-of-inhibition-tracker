@@ -8,6 +8,7 @@ import { ERROR_MESSAGES } from '../../constants/error-messages';
 import { SUCCESS_MESSAGES } from '../../constants/success-messages';
 import { validateFile } from '../../utils/file';
 import { toFileMetadataDTO } from '../../utils/mapper';
+import { getDiameters } from '../../utils/diameters';
 
 const fileRouter = Router();
 
@@ -19,7 +20,13 @@ fileRouter.post('/', upload.single('file'), async(req, res, next) => {
 
 		validateFile(req.file);
 		const metadata = await saveFileMetadata(req.file);
-		res.json({ message: SUCCESS_MESSAGES.FILE_UPLOADED, file: toFileMetadataDTO(metadata) });
+
+		const diameters = getDiameters(req.file.originalname);
+
+		res.json({
+			message: SUCCESS_MESSAGES.FILE_UPLOADED,
+			file: { ...toFileMetadataDTO(metadata), diameters },
+		});
 	} catch (error) {
 		next(error);
 	}
@@ -28,7 +35,10 @@ fileRouter.post('/', upload.single('file'), async(req, res, next) => {
 fileRouter.get('/list', async(_req, res, next) => {
 	try {
 		const files = await listFiles();
-		const fileDTOs = files.map(toFileMetadataDTO);
+		const fileDTOs = files.map((file) => ({
+			...toFileMetadataDTO(file),
+			diameters: getDiameters(file.originalName),
+		}));
 		res.json({ data: fileDTOs });
 	} catch (error) {
 		next(error);
@@ -46,7 +56,13 @@ fileRouter.get('/:id', async(req: Request, res: Response, next: NextFunction) =>
 			throw new AppError(404, ERROR_MESSAGES.FILE_NOT_FOUND);
 		}
 
-		res.json({ data: { file: toFileMetadataDTO(fileMetadata) } });
+		const diameters = getDiameters(fileMetadata.originalName);
+
+		res.json({
+			data: {
+				file: { ...toFileMetadataDTO(fileMetadata), diameters }
+			}
+		});
 	} catch (error) {
 		next(error);
 	}

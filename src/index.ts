@@ -5,6 +5,16 @@ import { env } from './config/env';
 import { logger } from './utils/logger';
 import { AppError } from './middleware/error-handler';
 import { ERROR_MESSAGES } from './constants/error-messages';
+import { loadDiametersMap } from './utils/diameters';
+
+loadDiametersMap(`${env.dataDir}/diameters.csv`)
+	.then(() => {
+		logger.info('Diameters data loaded successfully');
+	})
+	.catch((error) => {
+		logger.error('Failed to load diameters data:', error);
+		process.exit(1);
+	});
 
 dataSource.initialize()
 	.then(() => {
