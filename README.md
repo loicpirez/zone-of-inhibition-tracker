@@ -92,6 +92,7 @@ git clone https://github.com/loicpirez/zone-of-inhibition-tracker.git zone-of-in
 
 ## Notes
 - The frontend and backend communicate via REST APIs. Ensure the `VITE_ZOIT_API_URL` in the frontend `.env` file matches the backend's base URL.
-- For production deployment, refer to the respective README files in the [frontend folder](https://github.com/loicpirez/zone-of-inhibition-tracker/frontend) and [backend folder](https://github.com/loicpirez/zone-of-inhibition-tracker/backend).
+- For production deployment, refer to the respective README files in the [frontend folder](https://github.com/loicpirez/zone-of-inhibition-tracker/tree/main/frontend) and [backend folder](https://github.com/loicpirez/zone-of-inhibition-tracker/tree/main/backend
+).
 
 ---
